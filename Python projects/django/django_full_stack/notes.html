@@ -1,0 +1,317 @@
+<!-- MODEL -->
+# -*- coding: utf-8 -*-
+from django.db import models
+from django.contrib import messages
+
+# Create your models here.
+class UserManager(models.Manager):
+    def validate(self, formdata):
+        #validate and sanitize formdata
+        #Show validation error messages if validations fail the following tests
+        # First Name - Required; No fewer than 2 characters; letters only
+        # Last Name - Required; No fewer than 2 characters; letters only
+        # Email - Required; Valid Format
+        # Password - Required; No fewer than 8 characters in length; matches Password Confirmation
+        return
+    ###
+    def create_new_user(self, sanidata):
+        # sql stuff here
+        return
+    ###
+    def login(self, formdata):
+        #login procedure here
+        return
+
+class User(models.Model):
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    email = models.CharField(max_length=255)
+    password = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    ###
+    objects = UserManager()
+    ###
+    def __repr__(self):
+        return "<User object: {} {} ({})>".format(self.first_name, self.last_name, self.email)
+
+<!-- VIEWS -->
+from django.shortcuts import render, redirect, reverse, HttpResponse
+from django.contrib import messages
+
+# Create your views here.
+def index(request):
+    # check for flashed messages
+    messages = get_messages(request)
+    if messages:
+        context = {
+            'messages': messages
+        }
+    else:
+        context = {}
+
+    # check if logged_in and user_id exist
+    if not 'logged_in' in request.session:
+        request.session['logged_in'] = False
+    if not 'user_id' in request.session:
+        request.session['user_id'] = None
+
+    # if logged in, send redirect to /success
+    if request.session['logged_in'] == True and not request.session['user_id'] == None:
+        return redirect('/success')
+    return render(request, 'login_register/index.html', context)
+
+def login(request):
+    response = 'johnahnz0rs is l33t; use POST data to login: bcrypt, User model'
+    user = User.objects.login()
+    print user
+    context = {
+        'user': user
+    }
+    return HttpResponse(response)
+
+def register(request):
+    response = 'johnahnz0rs is l33t; use POST data to create a new user: User model, validations, regex, bcrypt'
+    # User.objects.validate()
+    return HttpResponse(response)
+
+def success(request):
+    response = 'johnahnz0rs is l33t; if login or registration is successful, then render a template(success.html)'
+    context = {
+        'user': 'something'
+    }
+    return render(request, 'login_register/success.html', context)
+
+
+# Build the following:
+# Show validation error messages if validations fail the following tests
+    # First Name - Required; No fewer than 2 characters; letters only
+    # Last Name - Required; No fewer than 2 characters; letters only
+    # Email - Required; Valid Format
+    # Password - Required; No fewer than 8 characters in length; matches Password Confirmation
+
+<!-- TEMPLATE -->
+<body>
+        <div class="container">
+            <h1>Registration</h1>
+            <form method="POST" action="/login_register/register">
+                {% csrf_token %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <p class="red_text">{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+                <table>
+                    <tr>
+                        <td><label for="first_name">First Name:</label></td>
+                        <td><input type="text" name="first_name"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="last_name">Last Name:</label></td>
+                        <td><input type="text" name="last_name"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="email">Email:</label></td>
+                        <td><input type="text" name="email"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="password">Password:</label></td>
+                        <td><input type="text" name="first_name"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="c_password">Confirm PW:</label></td>
+                        <td><input type="text" name="c_password"></td>
+                    </tr>
+                </table>
+                <p class="submit_button">
+                    <input type="submit" value="Register">
+                </p>
+            </form>
+
+            <p>&nbsp;</p>
+
+            <h1>Login</h1>
+            <form method="POST" action="/login_register/login">
+                {% csrf_token %}
+                <table>
+                    <tr>
+                        <td><label for="email">Email: </label></td>
+                        <td><input type="text" name="email"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="password">Password:</label></td>
+                        <td><input type="text" name="password"></td>
+                    </tr>
+                </table>
+                <p class="submit_button">
+                    <input type="submit" value="Login">
+                </p>
+            </form>
+
+
+
+        </div>
+    </body>
+
+<!-- TEMPLATE 2 -->
+<body>
+        <div class="container">
+            <h1>Success! Welcome, {{ user.first_name }}!</h1>
+            {% if messages %}
+                {% for message in messages %}
+                    <p class="green_text">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+
+            <p>&nbsp;</p>
+
+            <p><a href="/">Back to Homepage</a></p>
+
+        </div>
+    </body>
+
+-------
+
+<!-- MODELS -->
+import re, bcrypt
+
+NAME_REGEX = re.compile(r'^[a-zA-Z]+$')
+EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
+
+# Create your models here.
+class usersManager(models.Manager):
+    def user_validator(self, postData):
+        #errors dictionary for passing error messages to template
+        errors ={}
+        #validation
+        if postData['type'] == 'register':
+            print "Register validation"
+            if self.filter(email=postData['email']).exists(): #checks if a record with a matching email address exists in the database
+                errors['Email error'] = 'Email address is allready registered'
+            if len(postData['first_name'])< 2:
+                errors['first_name'] = "First name should be more than 2 characters"
+            if len(postData['last_name'])< 2:
+                errors['Last Name'] = "Last name should be more than 2 characters"
+            if not NAME_REGEX.match(postData['first_name']):
+                errors['First name Format'] = "First name can only have characters"
+            if not NAME_REGEX.match(postData['last_name']):
+                errors["Last Name Format"] = "Last name can only have characters"
+            if not EMAIL_REGEX.match(postData['email']):
+                errors['Email Format'] = "Email is not in proper format"
+            if postData['password'] != postData['Confirm_pw']:
+                errors['Password'] = 'Passwords do not match'
+            if len(postData['password']) < 8:
+                errors['Password Length'] = "Password should be longer than 8 characters"
+        
+        elif postData['type'] == 'login':
+            print "login validation"
+            #if email is not found create error message, 
+            if not self.filter(email=postData['email']).exists():
+                    #self is equivilant to users.objects in this scope
+                errors['Email error'] = 'Email address is not registered'
+            #else get user object via email match, check password 
+            else:
+                this_user = users.objects.get(email = postData['email']) 
+                if not bcrypt.checkpw(postData['password'].encode(), this_user.salt.encode()):
+                    errors['Password Error'] ='Password is invalid'
+        
+        
+        return errors
+
+
+class users(models.Model):
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    email = models.CharField(max_length=255)
+    password = models.CharField(max_length=255)
+    salt = models.CharField(max_length=255)
+    def __repr__():
+        print self.first_name, self.last_name, self.email, self.password, self.salt
+    #this includes the users manager object in the user object, extends the functionality of the object
+    objects = usersManager()
+
+<!-- VIEWS -->
+from django.shortcuts import render, HttpResponse, redirect
+from .models import *
+from django.core.urlresolvers import reverse
+from django.contrib import messages
+import bcrypt
+
+# Create your views here.
+def landing(request):
+    print "homepage"
+    return render(request, 'login.html')
+
+def register(request, methods="POST"):
+    print "Im in register!"
+    errors = users.objects.user_validator(request.POST)
+    if len(errors):
+        for tag, error in errors.iteritems():
+            messages.error(request, error, extra_tags=tag)#this creates the key value pais for error messages
+        return redirect('/index')
+    else:
+        #encript password, generate salt
+        hash1 = bcrypt.hashpw(request.POST['password'].encode(), bcrypt.gensalt())
+        #print hash1
+        users.objects.create(first_name = request.POST['first_name'], last_name = request.POST['last_name'], email = request.POST['email'], password = request.POST['password'], salt = hash1)
+        #after user is created, grab the new users id# and pass to success pageß
+        this_user = users.objects.get(email = request.POST['email'])
+        id = this_user.id
+    return redirect('sucsess', id =id)
+
+def login(request, methods="POST"):
+    errors = users.objects.user_validator(request.POST)
+    if len(errors):
+        for tag, error in errors.iteritems():
+            messages.error(request, error, extra_tags=tag)#this creates the key value pais for error messages
+        return redirect('/index')
+    else:
+        this_user = users.objects.get(email = user_email)
+        id = this_user.id
+        return redirect('sucsess', id = id)
+
+
+def success(request,id):
+    context = {
+        'user' : users.objects.get(id =id)
+    }
+    return render(request, 'success.html',context)
+
+<!-- LOGIN -->
+<body>
+
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{message.tags}}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <h1>Registration</h1>
+        <form action="{% url 'register' %}" method="POST">
+            {% csrf_token %}
+            <label for="first_name">First Name: <input type="text" name="first_name"></label>
+            <label for="last_name">Last Name: <input type="text" name="last_name"></label>
+            <label for="email">Email: <input type="text" name="email"></label>
+            <label for="password">password: <input type="text" name="password"></label>
+            <label for="Confirm_pw">Confirm pw: <input type="text" name="Confirm_pw"></label>
+            <input type="hidden" name="type" value="register">
+            <input type="submit" value="Register">
+        </form>
+    
+        <h1>Login</h1>
+        <form action="{% url 'login'%}" method="POST">
+            {% csrf_token %}
+            <label for="email">Email: <input type="text" name="email"></label>
+            <label for="password">Password: <input type="text" name="password"></label>
+            <input type="hidden" name="type" value="login">
+            <input type="submit" value="Login">
+        </form>
+        
+    </body>
+
+<!-- SUCCESS -->
+<body>
+        <h1>Success! Welcome, {{user.first_name}}!</h1>
+        <h4>Succsessfully registered (or logged in)!</h4>
+    </body>

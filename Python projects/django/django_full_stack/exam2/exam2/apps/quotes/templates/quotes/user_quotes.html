@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang='en' dir='ltr'>
+
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <meta http-equiv='X-UA-Compatible' content='ie=edge'>
+    <link rel='stylesheet' href=''>
+    <title></title>
+</head>
+
+<body>
+    <a href="/quotes">Back</a>
+    <a href="/logout">
+        <button>Logout</button>
+    </a>
+    <h2>{{user.first_name}} {{user.last_name}}'s Quotes</h2>
+    {% for quotes in user_quotes %}
+    <table>
+        <p>{{quotes.author}}: "{{quotes.quote}}"</p>
+    </table>
+    {% endfor %}
+</body>
+
+</html>

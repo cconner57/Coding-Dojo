@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <title>Chat room</title>
+    <script>
+        $(document).ready(function () {
+            var socket = io.connect();
+            $('#messages').hide();
+
+            socket.on('msg', function (msgData) {
+                $('#chatarea').append(`<p>${msgData.msg}</p>`);
+            });
+            $('#user').submit(function (e) {
+                e.preventDefault();
+                var username = {
+                    name: $('#name').val()
+                }
+                socket.emit('register', username)
+                $('#user').hide();
+                $('#messages').show();
+            })
+            $('#messages').submit(function (e) {
+                e.preventDefault();
+                console.log(e);
+                var message_text = {
+                    message_text: $('#msg').val()
+                }
+                socket.emit('msg', message_text);
+                $('#msg').val('');
+            })
+        });
+    </script>
+</head>
+
+<body>
+    <div id="chatarea">
+    </div>
+    <form id="user">
+        <p>Enter Name: <input type="text" id="name"></p>
+        <input type="submit" value="submit">
+    </form>
+    <form id="messages">
+        <p>Enter Message: <input type="text" id="msg"></p>
+        <input type="submit" value="submit">
+    </form>
+</body>
+
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang='en' dir='ltr'>
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <meta http-equiv='X-UA-Compatible' content='ie=edge'>
+    <title>Welcome to Dojo App</title>
+</head>
+<body>
+    <h1>All Current Dojos</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Location</th>
+                <th>Capacity</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for(var d of allDojos) { %>
+            <tr>
+                <td><%= d.location %></td>
+                <td><%= d.capacity %></td>
+            </tr>
+            <% } %>
+        </tbody>
+    </table>
+    <h1>Create New Dojo</h1>
+
+    <form action="/dojos">
+        <p>
+            <label for="location">Location:</label>
+            <input type="text" name="location">
+        </p>
+        <p>
+            <label for="capacity">Capacity:</label>
+            <input type="number" name="capacity">
+        </p>
+        <input type="submit" value="Create a new Dojo">
+    </form>
+</body>
+</html>

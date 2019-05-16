@@ -1,0 +1,118 @@
+<!-- MODELS -->
+class usersManager(models.Manager):
+    def user_validator(self, postData):
+        #errors dictionary for passing error messages to template
+        errors ={}
+        #validation
+        if postData['type'] == 'register':
+            print "Register validation"
+            if self.filter(email=postData['email']).exists(): #checks if a record with a matching email address exists in the database
+                errors['Email error'] = 'Email address is allready registered'
+            if len(postData['full_name'])< 2:
+                errors['full_name'] = "First name should be more than 2 characters"
+            if len(postData['alias'])< 2:
+                errors['Alias'] = "Alias should be more than 2 characters"
+            if not NAME_REGEX.match(postData['full_name']):
+                errors['Full name Format'] = "Full name can only have characters"
+            if not EMAIL_REGEX.match(postData['email']):
+                errors['Email Format'] = "Email is not in proper format"
+            if postData['password'] != postData['confirm_pw']:
+                errors['Password'] = 'Passwords do not match'
+            if len(postData['password']) < 8:
+                errors['Password Length'] = "Password should be longer than 8 characters"
+            if len(errors) == 0:
+                hash1 = bcrypt.hashpw(postData['password'].encode(), bcrypt.gensalt())
+                user.objects.create(full_name = postData['full_name'], Alias = postData['alias'],email=postData['email'], password = postData['password'], salt = hash1 )
+        
+        elif postData['type'] == 'login':
+            #if email is not found create error message, 
+            if not self.filter(email=postData['email']).exists():
+                    #self is equivilant to users.objects in this scope
+                errors['Email error'] = 'Email address is not registered'
+            #else get user object via email match, check password 
+            else:
+                this_user = user.objects.get(email = postData['email']) 
+                if not bcrypt.checkpw(postData['password'].encode(), this_user.salt.encode()):
+                    errors['Password Error'] ='Password is invalid'
+        
+        
+        return errors
+
+
+class user(models.Model):
+    full_name = models.CharField(max_length=255)
+    Alias = models.CharField(max_length=255)
+    email = models.CharField(max_length=255)
+    password = models.CharField(max_length=255)
+    salt = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    def __repr__():
+        print self.first_name, self.last_name, self.email, self.password, self.salt
+    #this includes the users manager object in the user object, extends the functionality of the object
+    objects = usersManager()
+
+<!-- URLS -->
+url(r'^login', views.landing, name ='login'),
+url(r'^process', views.process, name ='process'),
+
+<!-- VIEWS -->
+from django.shortcuts import render, HttpResponse, redirect
+from .models import *
+from django.core.urlresolvers import reverse
+from django.contrib import messages
+import bcrypt
+
+# Create your views here.
+def landing(request):
+    if 'id' not in request.session:
+        request.session['id'] = 0
+    else:
+        request.session['id'] = 0
+    return render(request, "landing.html")
+
+def process(request, methods="POST"):
+    errors = user.objects.user_validator(request.POST)
+    if len(errors):
+        for tag, error in errors.iteritems():
+            messages.error(request, error, extra_tags=tag)
+        return redirect('/login')
+    else:
+        this_user = user.objects.get(email = request.POST['email'])
+        request.session['id'] = this_user.id
+        print request.session['id']
+        context = {
+            'user' : this_user
+        }
+        return render(request, 'Reviews/books.html', context)
+
+<!-- TEMPLATE -->
+<body>
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{message.tags}}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <h3>Register</h3>
+        <form action="{% url 'process'%}" method="POST">
+            {% csrf_token %}
+            <label for="full_name">Name: <input type="text" name="full_name"></label>
+            <label for="alias">Alias: <input type="text" name="alias"></label>
+            <label for="email">email: <input type="text" name="email"></label>
+            <label for="password">password: <input type="text" name="password"></label>
+            <label for="confirm_pw">confirm password: <input type="text" name="confirm_pw"></label>
+            <input type="hidden" name="type" value="register">
+            <input type="submit" value="Register">
+        </form>
+        <h3>Login</h3>
+        <form action="{% url 'process'%}" method="POST">
+            {% csrf_token %}
+            <label for="email">Email: <input type="text" name="email"></label>
+            <label for="password">Password: <input type="text" name="password"></label>
+            <input type="hidden" name="type" value="login">
+            <input type="submit" value="Login">
+        </form>
+        
+    </body>

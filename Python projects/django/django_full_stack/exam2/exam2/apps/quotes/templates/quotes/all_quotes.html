@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang='en' dir='ltr'>
+
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <meta http-equiv='X-UA-Compatible' content='ie=edge'>
+    <link rel='stylesheet' href=''>
+    <title></title>
+</head>
+
+<body>
+    <h2>Welcome {{user.first_name}}!</h2>
+    <a href="/myaccount/{{user.id}}">Edit My Account</a>
+    <a href="/logout">
+        <button>Logout</button>
+    </a>
+    <p>Create a Quote!</p>
+    {% if messages %}
+    {% for message in messages %}
+    <p style="color: red">{{message}}</p>
+    {% endfor %}
+    {% endif %}
+    <form action="/add_quote" method="POST">
+        {% csrf_token %}
+        <p>Author <input type="text" name="author"></p>
+        <p>Quote <textarea name="quote" cols="30" rows="10"></textarea></p>
+        <input type="submit" value="Submit">
+    </form>
+
+    <p>Quotes</p>
+    {% for quotes in all_quotes %}
+    <table>
+        <p>{{quotes.author}}: "{{quotes.quote}}"</p>
+        
+        <p>Posted by <a href="user/{{quotes.quoted.id}}">{{quotes.quoted.first_name}}</a></p>
+        {% if user.id == quotes.quoted.id %}
+        <a href="quotes/{{quotes.id}}/destroy">Delete</a>
+        {% endif %}
+    </table>
+    {% endfor %}
+</body>
+</html>

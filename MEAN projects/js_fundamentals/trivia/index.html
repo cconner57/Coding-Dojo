@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang='en' dir='ltr'>
+
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <meta http-equiv='X-UA-Compatible' content='ie=edge'>
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js'></script>
+    <script>
+        $(document).ready(function () {
+            $.get("https://opentdb.com/api.php?amount=5&category=20", function (data) {
+                for (var i = 0; i < 5; i++) {
+                    var question =
+                        `<p>Question: ${data.results[i].question}</p><p>Choices: </p><p>${data.results[i].correct_answer},${data.results[i].incorrect_answers}</p><hr>`;
+                    $("#questions").append(question);
+                }
+            })
+        })
+    </script>
+    <title>Trivia</title>
+</head>
+
+<body>
+    <h1>Trivia Night</h1>
+    <div id="questions">
+
+    </div>
+</body>
+
+</html>

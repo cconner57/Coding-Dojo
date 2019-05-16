@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang='en' dir='ltr'>
+
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <meta http-equiv='X-UA-Compatible' content='ie=edge'>
+    <link rel='stylesheet' href=''>
+    <title></title>
+</head>
+
+<body>
+<h2>Hello {{user.first_name}}!</h2>
+<a href="/logout">Logout</a>
+<a href="trips/new">
+<button>Create a new trip!</button>
+</a>
+<p>Your trips:</p>
+<table>
+    <tr>
+        <td>Destination</td>
+        <td>Start Date</td>
+        <td>End Date</td>
+        <td>Plan</td>
+        <td>Actions</td>
+    </tr>
+    
+    {% for trip in all_trips %}
+    {% if user.id == trip.planner.id %}
+    <tr>
+        <td><a href="trips/{{trip.id}}">{{trip.destination}}</a></td>
+        <td>{{trip.start_date}}</td>
+        <td>{{trip.end_date}}</td>
+        <td>{{trip.plan}}</td>
+        <td><a href="trips/{{trip.id}}/destroy">Remove</a> | <a href="trips/edit/{{trip.id}}">Edit</a></td>
+    </tr>
+    {% endif %}
+    {% endfor %}
+    
+</table>
+</body>
+
+</html>

@@ -1,0 +1,507 @@
+<!-- VIEWS -->
+@app.route('/')
+def index():
+    print 'johnahnz0rs is l33t'
+    return render_template('index.html')
+
+
+@app.route('/login', methods=['post'])
+def login():
+    print 'johnahnz0rs is l33t'
+    form_email = request.form['email']
+    password = request.form['password']
+    hashed_password = md5.new(password + salt).hexdigest()
+    query_login = 'select * from users where email = :email and password = :password'
+    data_login = {
+        'email': form_email,
+        'password': hashed_password
+    }
+    user = mysql.query_db(query_login, data_login)
+    if user:
+        for x in user:
+            if x['password'] == hashed_password:
+                session['id'] = x['id']
+                flash('Login success, mate.')
+                return redirect('/wall', user_info = user)
+    else:
+        flash('Incorrect email and/or password, bruh', 'login_error')
+        return redirect('/')
+
+
+@app.route('/register', methods=['post'])
+def register():
+    print 'johnahnz0rs is l33t'
+    first_name = request.form['first_name']
+    last_name = request.form['last_name']
+    email = request.form['email']
+    if len(first_name) < 2 or len(last_name) < 2:
+        flash("C'mon, tell me your name forreal.", 'register_error')
+        return redirect('/')
+    elif len(email) < 1 or not EMAIL_REGEX.match(email):
+        flash("Invalid email address; try again, my dude.", 'register_error')
+        return redirect('/')
+    elif len(request.form['password']) < 8:
+        flash('Password too short, dogg.', 'register_error')
+        return redirect('/')
+    elif request.form['password'] != request.form['cpassword']:
+        flash("Passwords don't match, my friend.", 'register_error')
+        return redirect('/')
+    hashed_password = md5.new(request.form['password'] + salt).hexdigest()
+    query = 'insert into users (first_name, last_name, email, password, created_at, updated_at) values (:first_name, :last_name, :email, :password, now(), now());'
+    data = {
+        'first_name': first_name,
+        'last_name': last_name,
+        'email': email,
+        'password': hashed_password
+    }
+    mysql.query_db(query, data)
+    flash('Registration successful, homey. Login to continue.', 'register_success')
+    return redirect('/')
+
+
+
+@app.route('/wall')
+def wall():
+    # grab all messages made by user and store in session
+    query_messages = "select users.first_name, users.last_name, date_format(messages.created_at, '%M %D, %Y') as 'message_date', messages.message from messages join users on messages.user_id = users.id where users.id = :id order by messages.created_at desc"
+    data_messages = {
+        'id': session['id']
+    }
+    get_messages = mysql.query_db(query_messages, data_messages)
+    print session['len_user_messages']
+    #
+    # grab all comments to user's messages, sort by created_at asc/desc
+    print session['user_messages'][0]
+    return render_template('wall.html', user_messages = get_messages, )
+
+
+@app.route('/post_message')
+def post_message():
+    # 
+    return redirect('/wall')
+
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    print '='*50
+    print 'session is cleared'
+    print '='*50
+    flash('yu0 ar3 n0w logged 0ut', 'register_success')
+    return redirect('/')
+
+<!-- INDEX -->
+<div class='wrapper'>
+		<h1>Login or Register</h1>
+		<div class='login'>
+			<h1>Login</h1>
+			{% with messages = get_flashed_messages(category_filter=['login_error']) %}
+				{% if messages %}
+					{% for message in messages %}
+						<div class='error'>{{ message }}</div>
+					{% endfor %}
+				{% endif %}
+			{% endwith %}
+			{% with messages = get_flashed_messages(category_filter=['register_success']) %}
+				{% if messages %}
+					{% for message in messages %}
+						<div class='success'>{{ message }}</div>
+					{% endfor %}
+				{% endif %}
+			{% endwith %}
+			<form name="login" action='/login' method='post'>
+				<table>
+					<tr>
+						<td><label for='email'>Email: </label></td>
+						<td><input type='text' name='email' class='input-text'></td>
+					</tr>
+					<tr>
+						<td><label for='password'>Password: </label></td>
+						<td><input type='text' name='password' class='input-text'></td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td><label for='submit'></label><input type='submit' name='submit' value='Login' class='input-submit'></td>
+					</tr>
+				</table>
+			</form>
+		</div> <!-- end .login -->
+		<div class='register'>
+			<h1>Register</h1>
+			{% with messages = get_flashed_messages(category_filter=['register_error']) %}
+				{% if messages %}
+					{% for message in messages %}
+						<div class='error'>{{ message }}</div>
+					{% endfor %}
+				{% endif %}
+			{% endwith %}
+			<form name='register' action='/register' method='post'>
+				<table>
+					<tr>
+						<td><label for='first_name'>First Name:</label></td>
+						<td><input type='text' name='first_name' class='input-text'></td>
+					</tr>
+					<tr>
+						<td><label for='last_name'>Last Name:</label></td>
+						<td><input type='text' name='last_name' class='input-text'></td>
+					</tr>
+					<tr>
+						<td><label for='email'>Email: </label></td>
+						<td><input type='text' name='email' class='input-text'></td>
+					</tr>
+					<tr>
+						<td><label for='password'>Password: </label></td>
+						<td><input type='text' name='password' class='input-text'></td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td class='small_font'>Password must be at least 8 characters</td>
+					</tr>
+					<tr>
+						<td><label for='cpassword'>Confirm Password: </label></td>
+						<td><input type='text' name='cpassword' class='input-text'></td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td class='small_font'>Passwords must match, obvi</td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td><label for='submit'></label><input type='submit' name='submit' value='Register' class='input-submit'></td>
+					</tr>
+				</table>
+			</form>
+		</div> <!-- end .register -->
+			
+
+			<!-- {% with messages = get_flashed_messages() %}
+				{% if messages %}
+					{% for message in messages %}
+						<div class='fail'>{{ message }}</div>
+					{% endfor %}
+				{% endif %}
+			{% endwith %} -->
+
+
+    </div>
+    
+<!-- SUCCESS -->
+<div class='wrapper'>
+		<h1>Dude, good job!</h1>
+    </div>
+    
+<!-- WALL -->
+<div class='wrapper'>
+		<div class='header'>
+			<h1 class='header_h1'>CodingDojo Wall</h1>
+			<div class='header_other'><p>Welcome {{ session['first_name'] }}</p><p class='header_logout'><a href='/logout'>log off</a></p></div>
+		</div> <!-- end .header -->
+		{% with messages = get_flashed_messages() %}
+			{% if messages %}
+				{% for message in messages %}
+					<div class='success'>{{ message }}</div>
+				{% endfor %}
+			{% endif %}
+		{% endwith %}
+		<div class='post_message'>
+			<!-- form: post a message -->
+			<h2>Post a message</h2>
+			<form name='post_message' class='make_a_post' id='post_message' action='/post_message' method='post'>
+				<textarea name='message' form='post_message' rows='4'>Post a message</textarea><br>
+				<input type='submit' value="Post a message" class='submit_post'>
+			</form>
+		</div>
+
+		<div class='display_messages'>
+			{% for message in session['user_messages'] %}
+				<div class='message_date'><h4>{{ message['user_name'] }} - {{ message['message_date']}}</h4></div>
+				<div class='message_content'> {{ message['message']}}</div>
+
+				<!-- div display_comments -->
+
+
+					<!-- div post_comment -->
+
+
+			{% endfor %}
+
+
+			
+
+
+
+			<!-- testing {{ session['user_messages'][0]['message'] }} -->
+			<!-- display messages
+				- display first_name, last_name, created_at(month day-th, year)
+				- display messages.message
+				
+				display comments
+					- display first_name, last_name, created_at(month day-th, year)
+					- display comments.comment
+				form: post a comment -->
+
+
+		</div> <!-- end .display_messages -->
+
+    </div>
+    
+<!-- VIEWS V2 -->
+@app.route('/', methods=['post', 'get'])
+# 1. Create a login and registration page that is displayed when a user navigates to 'localhost:5000/'
+def index():
+    try:
+        session['logged_in']
+    except KeyError:
+        session['logged_in'] = False
+
+    if session['logged_in'] == True:
+        return redirect('/wall')
+    else:
+        return render_template('login_register.html')
+
+
+
+@app.route('/login', methods=['post', 'get'])
+def login():
+    query = 'select * from users where email = :email'
+    data = {
+        'email': request.form['email']
+    }
+    get_user = mysql.query_db(query, data)
+    if request.method == 'get':
+        return redirect('/')
+    else:
+        if get_user:
+            if get_user[0]['password'] == md5.new(request.form['password'] + salt).hexdigest():
+                session['logged_in'] = True
+                session['first_name'] = get_user[0]['first_name']
+                session['id'] = get_user[0]['id']
+                return redirect('/wall')
+            else:
+                flash('Incorrect password. Please try again.')
+                return redirect('/')
+        else:
+            flash('Incorrect email/password. Please try again or register.')
+            return redirect('/')
+
+
+@app.route('/register', methods=['post', 'get'])
+def register():
+    if request.method == 'get':
+        return redirect('/')
+    else:
+        if not request.form['first_name']:
+            flash('First name required')
+            return redirect('/')
+        elif not request.form['last_name']:
+            flash('Last name required')
+            return redirect('/')
+        elif not request.form['password']:
+            flash('Password required')
+            return redirect('/')
+        elif not request.form['cpassword']:
+            flash('Password confirmation required')
+            return redirect('/')
+        elif request.form['password'] != request.form['cpassword']:
+            flash('Passwords must match')
+            return redirect('/')
+        else:
+            query = "insert into users (first_name, last_name, email, password, created_at, updated_at) values(:first_name, :last_name, :email, :password, now(), now());"
+            data = {
+                'first_name': request.form['first_name'],
+                'last_name': request.form['last_name'],
+                'email': request.form['email'],
+                'password': md5.new(request.form['password'] + salt).hexdigest()
+            }
+            create_user = mysql.query_db(query, data)
+            session['id'] = create_user
+            session['first_name'] = request.form['first_name']
+            session['logged_in'] = True
+            flash('Registration successful and logged in')
+            return redirect('/wall')
+        
+
+@app.route('/logout', methods=['post', 'get'])
+def logout():
+    session.clear()
+    return redirect('/')
+
+
+@app.route('/wall', methods=['post', 'get'])
+def wall():
+    try:
+        session['logged_in']
+    except KeyError:
+        session['logged_in'] = False
+
+    if session['logged_in'] == False:
+        flash('You must log in to view The Wall')
+        return redirect('/')
+    else:
+        # grab all messages
+        query_messages = "select users.first_name, users.last_name, messages.id, messages.message, date_format(messages.created_at, '%M %D, %Y') as message_created_at from messages join users on messages.user_id = users.id order by messages.created_at desc;"
+        get_messages = mysql.query_db(query_messages)
+        # grab all comments
+        query_comments = "select users.first_name, users.last_name, messages.id, comments.message_id, comments.comment, date_format(comments.created_at, '%M %D, %Y') as comment_created_at from comments join users on comments.user_id = users.id join messages on messages.id = comments.message_id order by comments.created_at asc;"
+        get_comments = mysql.query_db(query_comments)
+        return render_template('wall.html', all_messages = get_messages, all_comments = get_comments)       
+
+
+@app.route('/post_message', methods=['post', 'get'])
+def post_message():
+    if request.method == 'get':
+        return redirect('/wall')
+    else:
+        # insert into messages
+        query = "insert into messages (user_id, message, created_at, updated_at) values (:user_id, :message, now(), now());"
+        data = {
+            'user_id': session['id'],
+            'message': request.form['message']
+        }
+        insert_message = mysql.query_db(query, data)
+        print insert_message
+        return redirect('/wall')
+
+
+@app.route('/post_comment', methods=['post', 'get'])
+def post_comment():
+    if request.method == 'get':
+        return redirect('/wall')
+    elif request.method == 'post':
+        # insert into comments
+        user_comment = request.form['user_comment']
+        message_id = request.form['message_id']
+        query = "insert into comments (comment, user_id, message_id, created_at, updated_at) values (':user_comment', ':user_id', ':message_id', now(), now());"
+        data = {
+            'user_comment': user_comment,
+            'user_id': session['id'],
+            'message_id': message_id
+        }
+        insert_comment = mysql.query_db(query, data)
+        return redirect('/wall')
+
+<!-- LOGIN REGISTER -->
+<div class='wrapper'>
+		<h1>Login or Register</h1>
+		{% with messages = get_flashed_messages() %}
+			{% if messages %}
+			
+				{% for message in messages %}
+					<div class='flash_messages'>{{ message }}</div>
+				{% endfor %}
+			
+			{% endif %}
+		{% endwith %}
+
+
+		<div class='login_register'>
+			<h2>Login</h2>
+			<form id="login" action='/login' method='post'>
+				<table>
+					<tr>
+						<td class='label'><label for='email'>Email: </label></td>
+						<td><input type='text' name='email' class='input-text'></td>
+					</tr>
+					<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+					<tr>
+						<td class='label'><label for='password'>Password: </label></td>
+						<td><input type='text' name='password' class='input-text'></td>
+					</tr>
+				</table>
+				<label for='submit'></label><input type='submit' class='input-submit' form='login'>
+			</form>
+		</div> 
+		<div class='login_register'>
+			<h2>Register</h2>
+			<form id='register' action='/register' method='post'>
+				<table>
+					<tr>
+						<td class='label'><label for='first_name'>First Name:</label></td>
+						<td><input type='text' name='first_name' class='input-text'></td>
+					</tr>
+					<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+					<tr>
+						<td class='label'><label for='last_name'>Last Name:</label></td>
+						<td><input type='text' name='last_name' class='input-text'></td>
+					</tr>
+					<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+					<tr>
+						<td class='label'><label for='email'>Email: </label></td>
+						<td><input type='text' name='email' class='input-text'></td>
+					</tr>
+					<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+					<tr>
+						<td class='label'><label for='password'>Password: </label></td>
+						<td><input type='text' name='password' class='input-text'></td>
+					</tr><tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+					<tr>
+						<td class='label'><label for='cpassword'>Confirm Password: </label></td>
+						<td><input type='text' name='cpassword' class='input-text'></td>
+					</tr>
+				</table>
+				<label for='submit'></label><input type='submit' class='input-submit' form='register'>
+			</form>
+		</div> 
+
+    </div>
+    
+<!-- SUCCESS -->
+<div class='wrapper'>
+		<h1>Dude, good job!</h1>
+    </div>
+
+<!-- WALL  -->
+<div class='wrapper'>
+		<div class='header'>
+			<div class='coding_dojo'><h1>Coding Dojo Wall</h1></div>
+			<div class='greeting'>
+				Welcome {{ session['first_name'] }}
+			</div>
+			<div class='logout'>
+				<a href='/logout'>log off</a>
+			</div>
+		</div>
+
+		<div class='post_message'>
+			<span class='bold'>Post a message</span>
+			<form action='/post_message' method='post' id='post_message'>
+				<input type='hidden' value="{{ session['id'] }}" name='user_id'>
+				<textarea name='message' rows='4' cols='140'></textarea>
+			</form>
+			<input type='submit' value='Post a message' class='post_message_button' form='post_message'>
+		</div>
+
+		<div class='messages_comments'>
+			{% for message in all_messages %}
+				<div class='message_header'>
+					<span class='bold'>{{ message['first_name'] }} {{ message['last_name'] }} - {{ message['message_created_at'] }}</span>
+				
+					<div class='message_content'>
+						{{ message['message'] }}
+					</div>
+
+					{% for comment in all_comments %}
+						{% if message['id'] == comment['message_id'] %}
+							<div class='comment_header'>
+								<span class='bold'>{{ comment['first_name'] }}  {{ comment['last_name'] }} - {{ comment['comment_created_at'] }}</span>
+							</div>
+							<div class='comment_content'>
+								{{ comment['comment'] }}
+							</div>
+						{% endif %}
+					{% endfor %}
+
+					<div class='post_comment'>
+						<span class='bold'>Post a comment</span>
+						<form action='/post_comment' method='post' id='post_comment'>
+							<input type='hidden' value="{{ message['id'] }}" name='message_id'>
+							<textarea name='user_comment' rows='4' cols='130'></textarea>
+						</form>
+						<input type='submit' value='Post a comment' class='post_comment_button' form='post_comment'>
+					</div>
+
+				</div>
+				
+			{% endfor %}
+		</div>
+	</div>

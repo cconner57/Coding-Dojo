@@ -1,0 +1,19 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+.text {
+    margin: 35px;
+    padding: 15px 0px;
+    text-align: center;
+    border: 1px solid black;
+}
+
+.display {
+    margin: 50px;
+    padding: 15px 0px;
+    text-align: center;
+    border: 1px solid black;
+}

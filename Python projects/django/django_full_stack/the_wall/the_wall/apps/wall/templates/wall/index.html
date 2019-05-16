@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang='en' dir='ltr'>
+
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <meta http-equiv='X-UA-Compatible' content='ie=edge'>
+    <link rel='stylesheet' href=''>
+    <title></title>
+</head>
+
+<body>
+    <h1>Login or Register</h1>
+    <div class='login'>
+        <h1>Login</h1>
+        <form name="login" action='/login' method='post'>
+            <table>
+                <tr>
+                    <td><label for='email'>Email: </label></td>
+                    <td><input type='text' name='email' class='input-text'></td>
+                </tr>
+                <tr>
+                    <td><label for='password'>Password: </label></td>
+                    <td><input type='text' name='password' class='input-text'></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td><label for='submit'></label><input type='submit' name='submit' value='Login'
+                            class='input-submit'></td>
+                </tr>
+            </table>
+        </form>
+    </div> <!-- end .login -->
+    <div class='register'>
+        <h1>Register</h1>
+        <form name='register' action='/register' method='post'>
+            <table>
+                <tr>
+                    <td><label for='first_name'>First Name:</label></td>
+                    <td><input type='text' name='first_name' class='input-text'></td>
+                </tr>
+                <tr>
+                    <td><label for='last_name'>Last Name:</label></td>
+                    <td><input type='text' name='last_name' class='input-text'></td>
+                </tr>
+                <tr>
+                    <td><label for='email'>Email: </label></td>
+                    <td><input type='text' name='email' class='input-text'></td>
+                </tr>
+                <tr>
+                    <td><label for='password'>Password: </label></td>
+                    <td><input type='text' name='password' class='input-text'></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td class='small_font'>Password must be at least 8 characters</td>
+                </tr>
+                <tr>
+                    <td><label for='cpassword'>Confirm Password: </label></td>
+                    <td><input type='text' name='cpassword' class='input-text'></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td class='small_font'>Passwords must match, obvi</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td><label for='submit'></label><input type='submit' name='submit' value='Register'
+                            class='input-submit'></td>
+                </tr>
+            </table>
+        </form>
+</body>
+
+</html>

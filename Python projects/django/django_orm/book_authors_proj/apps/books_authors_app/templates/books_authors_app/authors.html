@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang='en' dir='ltr'>
+
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <meta http-equiv='X-UA-Compatible' content='ie=edge'>
+    <link rel='stylesheet' href=''>
+    <title></title>
+</head>
+
+<body>
+    <h1>{{author.first_name}} {{author.last_name}}</h1>
+    <p>ID: {{author.id}}</p>
+    <h3>Notes:</h3>
+    <p>{author.notes}</p>
+    <h3>Books</h3>
+    {{author.books.all}}
+    <form action="/add_book_to_author/{{author.id}}" method="post"></form>
+    <select name="book.id">
+        {% for book in all_books %}
+        <option value="{{books.id}}">{{book.title}}</option>
+        {% endfor %}
+    </select>
+    <br>
+    <input type="submit" value="Add Book to Auth">
+    </form>
+</body>
+
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Details</title>
+</head>
+<body>
+    <div class="container">
+    <h1>Cat info</h1>
+        <div class="info">
+            <h3>Information: <%= cat.name %></h3>
+            <img src='<%= cat.pic %>'>
+            <h3>Prefered Food: <%= cat.food%></h3>
+            <h3>Enjoys:</h3>
+            <ul>
+                <% for (var x in cat.likes){ %>
+                    <li><%= cat.likes[x] %></li>
+                <%}%>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
