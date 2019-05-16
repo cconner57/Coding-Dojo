@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang='en' dir='ltr'>
+
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <meta http-equiv='X-UA-Compatible' content='ie=edge'>
+    <link rel='stylesheet' href=''>
+    <title></title>
+</head>
+
+<body>
+    <h1>Students</h1>
+    {% for student in mytest %}
+    <div>
+        <h3>Name: {{student['first_name']}}</h3>
+        <h4>Last: {{student['last_name']}}</h4>
+    </div>
+    {% endfor %}
+</body>
+
+</html>

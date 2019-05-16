@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang='en' dir='ltr'>
+
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <meta http-equiv='X-UA-Compatible' content='ie=edge'>
+    <link rel='stylesheet' href='static/style.css'>
+    <title></title>
+</head>
+
+<body>
+    <h1>Add a New User</h1>
+    <a href="/users">Home</a>
+    <form action="/add_user" method="POST">
+        <p>First Name:</p>
+        <input type="text" name="first_name">
+        <p>Last Name:</p>
+        <input type="text" name="last_name">
+        <p>Email:</p>
+        <input type="text" name="email">
+        <input type="submit" value="Create">
+    </form>
+
+
+</body>
+
+</html>

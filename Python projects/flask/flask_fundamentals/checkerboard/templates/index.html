@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <title>Checkerboard Assignment</title>
+</head>
+
+<body>
+
+  <table>
+    {% for i in range(4):%}
+    <tr>
+      {% for j in range(0, add_rows) %}
+      <td class="color1"></td>
+      <td class="color2"></td>
+      {% endfor %}
+
+    </tr>
+    <tr>
+      {% for j in range(0, add_rows) %}
+      <td class="color2"></td>
+      <td class="color1"></td>
+      {% endfor %}
+    </tr>
+    {% endfor %}
+
+  </table>
+</body>
+
+</html>

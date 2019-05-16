@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang='en' dir='ltr'>
+
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <meta http-equiv='X-UA-Compatible' content='ie=edge'>
+    <link rel='stylesheet' href='static/style.css'>
+    <title></title>
+</head>
+
+<body>
+    <h1>All the Pets!</h1>
+    <table>
+        <tr>
+            <td>ID</td>
+            <td>Name</td>
+            <td>Type</td>
+        </tr>
+        {% for pet in my_pets %}
+        <tr>
+            <td>{{pet['id']}}</td>
+            <td>{{pet['name']}}</td>
+            <td>{{pet['type']}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br>
+    <h1 class="form">Add a Pet</h1>
+    <form action="/add_pet" method="POST">
+    <p>Name: <input type="text" name="name"></p>
+    <p>Type: <input type="text" name="type"></p>
+    <input type="submit" value="Add Pet">
+    </form>
+</body>
+
+</html>
