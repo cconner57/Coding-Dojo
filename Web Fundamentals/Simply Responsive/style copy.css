@@ -1,0 +1,50 @@
+header {
+  background-color: #b3b3b3;
+  border: 1px solid #ddd3bb;
+  margin-bottom: 10px;
+  padding-left: 10px;
+}
+
+header p {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+main {
+  background-color: #cccccc;
+  border: 1px solid #ddd3bb;
+  margin-bottom: 10px;
+  padding-left: 10px;
+}
+
+footer {
+  background-color: #ffffa0;
+  border: 1px solid #ddd3bb;
+  padding-left: 10px;
+}
+
+footer span {
+  font-weight: bold;
+}
+
+@media only screen and (max-width: 480px) {
+  .tablet, .desktop {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 481px) and (max-width: 1023px) {
+  .phone, .desktop {
+    display: none;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  .phone, .tablet {
+    display: none;
+  }
+}
+
+/* Phone - less than or equal to 480px
+  Tablet - between 481px and 1023px
+  Dekstop - greater than or equal to 1024px */

@@ -1,0 +1,213 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+
+}
+
+p {
+  color: #f0f0f0;
+}
+
+header {
+  display: inline-block;
+  /* outline: 1px solid green; */
+  width: 976px;
+  background-color: #1a1a1a;
+}
+
+.logo {
+  display: inline-block;
+  width: 300px;
+  padding: 15px 0px 15px 20px;
+}
+
+.logo img {
+  width: 225px;
+}
+
+.contact {
+  display: inline-block;
+  width: 200px;
+  vertical-align: top;
+  margin-left: 437px;
+  margin-top: 30px;
+}
+
+.contact p {
+  text-align: right;
+  font-weight: bolder;
+  color: #dad4c6;
+}
+
+.navbar {
+  width: 976px;
+  background-image: linear-gradient(#535353, #414141, #252525);
+
+}
+
+.navbar h4 {
+  color: #a0a3a1;
+  display: inline-block;
+  border-right: 1px solid grey;
+  padding: 15px 15px;
+  font-size: 14px;
+}
+
+.navbar h4:first-child {
+  margin-left: 15px;
+  color: white;⨠
+}
+
+main {
+  width: 975px;
+}
+
+.banner {
+background-color: #1a1a1a;
+}
+
+.banner img {
+  width: 976px;
+}
+
+.row1 {
+  background-color: #1a1a1a;
+}
+
+.row1 h3 {
+  color: #ec7934;
+}
+
+.column {
+  display: inline-block;
+  width: 215px;
+  vertical-align: top;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  margin-left: 24px;
+
+}
+
+.column h3 {
+  font-size: 16px;
+  font-weight: bolder;
+}
+
+.column p {
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.icon {
+  display: inline-block;
+  width: 40px;
+  vertical-align: top;
+  padding-right: 15px;
+
+}
+
+.content {
+  display: inline-block;
+  width: 157px;
+}
+
+.row2 {
+  width: 975px;
+  color: #1a1a1a;
+  background-image: url(stripes.png);
+  background-repeat: no-repeat;
+  background-size: 975px 150px;
+}
+
+.row2 h2 {
+  color: white;
+  padding-bottom: 10px;
+font-size: 28px;
+}
+
+.button input {
+  padding: 5px;
+  width: 120px;
+  height: 40px;
+  margin-top: 35px;
+  border-width: 0;
+  font-size: 16px;
+  border-radius: 5px;
+  background-image: linear-gradient(#f59a5e, #f38b48, #f28038);
+  color: white;
+  font-weight: bold;
+}
+
+.bninfo {
+  display: inline-block;
+  width: 670px;
+  padding: 30px 122px 40px 30px;
+}
+
+.button {
+  display: inline-block;
+  vertical-align: top;
+}
+
+footer {
+  width: 975px;
+  background-color: #1a1a1a;
+}
+
+footer h2 {
+  color: white;
+}
+
+footer h4 {
+  color: #ec7934;
+}
+
+.portprojects {
+  display: inline-block;
+}
+
+.portprojects h2 {
+  display: inline-block;
+}
+
+.portprojects p {
+  display: inline-block;
+  margin-left: 735px;
+  color: #ec7934;
+  font-style: italic;
+  font-size: 14px;
+  font-weight: bolder;
+  padding: 10px 0px;
+}
+
+.column2 {
+  display: inline-block;
+  width: 200px;
+  vertical-align: top;
+  margin: 10px 15px 0px 20px;
+
+}
+
+.column2 img {
+  border: 3px solid #363636;
+}
+
+.column2 h4 {
+  padding: 10px 0px;
+}
+
+.column2 p {
+ font-size: 14px;
+ font-weight: 700;
+}
+
+.barelyvisibletag p {
+  color: #797868;
+  margin-left: 880px;
+  font-size: 12px;
+  font-weight: bold;
+  margin-top: 40px;
+}

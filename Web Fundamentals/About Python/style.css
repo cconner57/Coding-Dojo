@@ -1,0 +1,180 @@
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
+p {
+  color: white;
+}
+
+header img {
+  display: inline-block;
+  width: 350px;
+  height: auto;
+  margin: 5px 0px 0px 10px;
+}
+
+.options {
+  display: inline-block;
+  vertical-align: top;
+  margin: 15px 0px 0px 360px;
+}
+
+.options p {
+  padding-left: 35px;
+  padding-bottom: 5px;
+  font-size: 14px;
+}
+
+.options input {
+  text-align: center;
+  height: 25px;
+}
+
+.options input:nth-last-of-type(1) {
+  background-color: rgb(38, 81, 116);
+  border-radius: 5px;
+  width: 30px;
+  height: 25px;
+  ;
+  color: white;
+}
+
+.options a {
+  color: yellow;
+  font-size: 14px;
+}
+
+body {
+  background-color: rgb(38, 81, 116);
+  width: 970px;
+}
+
+.searchbox {
+  background-color: rgb(68, 68, 68);
+  padding: 15px 35px;
+  border-radius: 15px;
+  box-shadow: 3px 3px 5px;
+}
+
+navbar {
+  background-color: rgb(75, 127, 174);
+  padding: 25px 65px;
+  border-radius: 5px;
+  box-shadow: 3px 3px 5px;
+  margin-left: 45px;
+  display: inline-block;
+  word-spacing: 57px;
+}
+
+navbar a {
+  color: white;
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+main {
+  width: 970px;
+}
+
+.slink {
+  display: inline-block;
+  vertical-align: top;
+  margin: 30px 0px 0px 70px;
+  text-align: center;
+  font-size: 18px;
+}
+
+.slink a {
+  color: white;
+}
+
+.slink li {
+  margin-left: 5px;
+  background-image: url('star.png');
+  background-repeat: no-repeat;
+  background-position: left;
+  background-size: 15px;
+  list-style-type: none;
+  padding-left: 20px;
+}
+
+.description {
+  display: inline-block;
+  width: 675px;
+  margin: 15px 0px
+}
+
+.description h4:nth-child(-n+6) {
+  color: rgb(251, 228, 85);
+  padding-top: 10px;
+  font-style: italic;
+  word-spacing: 2px;
+  letter-spacing: 1px;
+}
+
+.description h4:nth-child(7) {
+  padding-top: 10px;
+  color: white;
+}
+
+.description h4, p {
+  text-align: center;
+}
+
+.guide {
+  background-color: white;
+  margin: 0px;
+}
+
+.guide h3 {
+  font-size: 18px;
+  padding: 5px 0px;
+}
+
+.column {
+  display: inline-block;
+  width: 347px;
+  height: auto;
+  border-top: 5px solid rgb(65, 145, 213);
+  vertical-align: top;
+  text-align: center;
+  margin: 10px 0px 0px 95px;
+}
+
+.column p {
+  color: black;
+}
+
+.column span {
+  color: rgb(7, 125, 121);
+}
+
+.column ul {
+  margin-left: 10px;
+  color: rgb(7, 125, 121);
+  list-style-type: square;
+  padding-left: 20px;
+}
+
+footer {
+  background-color: rgb(38, 81, 116);
+  text-align: center;
+  padding-top: 40px;
+}
+
+footer a {
+  color: rgb(64, 140, 177);
+  text-decoration: none;
+}
+
+footer a:nth-child(2) {
+  padding: 0px 65px;
+}
+
+footer p {
+color: rgb(64, 140, 177);
+margin: 15px 0px 0px 35px;;
+font-size: 12px;
+}

@@ -1,0 +1,51 @@
+/* * {
+  padding: 0px;
+  margin: 0px;
+} */
+body {
+  background-color: rgb(83, 117, 162);
+  width: 970px;
+}
+
+h1, h2, p, li {
+  color: lightgrey;
+}
+
+a {
+  color: rgb(6, 255, 210);
+}
+
+header {
+  background-color: red;
+  border-radius: 15px;
+  padding: 3px;
+  margin-bottom: 15px;
+}
+
+nav {
+ background-color: rgb(44, 177, 157);
+ display: inline-block;
+ border-radius: 15px;
+ padding: 10px;
+ margin: 0px 15px 15px 0px;
+ vertical-align: top;
+}
+
+main {
+background-color: black;
+display: inline-block;
+border-radius: 15px;
+padding: 25px;
+width: 665px;
+}
+
+footer {
+ background-color: grey;
+ border-radius: 15px;
+ padding: 5px 0px 5px 20px;
+ margin-top: 15px;
+}
+
+.hightlight {
+  color: rgb(135, 157, 246);
+}
