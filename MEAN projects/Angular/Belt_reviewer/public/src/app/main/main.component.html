@@ -1,0 +1,15 @@
+<h3>Current Wheelpeople</h3>
+<table>
+  <tr>
+    <th>Driver</th>
+    <th>Occupants</th>
+    <th>Destinations</th>
+    <th>Actions</th>
+  </tr>
+  <tr *ngFor="let r of allRides">
+    <td>{{r.driver}}</td>
+    <td>{{r.riders.length}} / {{r.capacity}}</td>
+    <td>{{r.destination}}</td>
+    <td><button [routerLink]="['/rides', r._id]">View</button></td>
+  </tr>
+</table>

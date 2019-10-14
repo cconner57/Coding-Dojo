@@ -1,0 +1,10 @@
+<div *ngIf="ride">
+<h3>The Score</h3>
+<h3>Driver: {{ride.driver}}</h3>
+<h5>Occupants {{ride.riders.length}}/{{ride.capacity}}</h5>
+<p *ngFor="let o of ride.riders">{{o.name}} <button (click)="deleteRider(o)">Ejector Seat</button></p>
+<form *ngIf="ride.riders.length < ride.capacity" (submit)="addRider()">
+  <p>Name: <input type="text" name="newRider.name" [(ngModel)]="newRider.name"></p>
+  <input type="submit" value="Joining the Job">
+</form>
+</div>

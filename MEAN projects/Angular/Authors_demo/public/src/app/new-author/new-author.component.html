@@ -1,0 +1,21 @@
+<a [routerLink]="['/authors']">Home</a>
+
+<h1>Create new author</h1>
+
+<div *ngIf="errorsObject">
+  <p class="errorMessage" *ngFor="let item of errorsObject | keyvalue">
+    {{ item.value.message }}
+  </p>
+</div>
+
+<form (submit)="createNewAuthor()">
+  <p>
+    <label for="name">Name:</label>
+    <input type="text" name="newAuthor.name" [(ngModel)]="newAuthor.name">
+  </p>
+  <p>
+    <label for="age">Age:</label>
+    <input type="number" name="newAuthor.age" [(ngModel)]="newAuthor.age">
+  </p>
+  <input type="submit" value="Create Author">
+</form>

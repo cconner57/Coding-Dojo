@@ -1,0 +1,14 @@
+.new {
+  color: white;
+  background-color: green;
+}
+
+.edit {
+  color: white;
+  background-color: orange;
+}
+
+.details {
+  color: white;
+  background-color: red;
+}

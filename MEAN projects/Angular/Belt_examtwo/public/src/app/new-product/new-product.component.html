@@ -1,0 +1,25 @@
+<h2>New Product</h2>
+
+<div *ngIf="errorsObject">
+  <p class="errorMessage" *ngFor="let item of errorsObject | keyvalue">
+    {{ item.value.message }}
+  </p>
+</div>
+
+<form #productForm (submit)="createNewProduct()">
+  <p>
+    <label for="name">Name:</label>
+    <input type="text" name="newProduct.name" [(ngModel)]="newProduct.name">
+  </p>
+  <p>
+    <label for="type">Qty:</label>
+    <input type="number" name="newProduct.qty" [(ngModel)]="newProduct.qty">
+  </p>
+  <p>
+    <label for="type">Price:</label>
+    <input type="number" name="newProduct.price" [(ngModel)]="newProduct.price">
+  </p>
+  <button class="reset" (click)="productForm.reset()">Reset</button>
+  <input class="create" type="submit" value="Create">
+</form>
+

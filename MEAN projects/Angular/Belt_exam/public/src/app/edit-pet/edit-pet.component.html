@@ -1,0 +1,39 @@
+<h2>Edit this pet</h2>
+
+<div *ngIf="errorsObject">
+    <p class="errorMessage" *ngFor="let item of errorsObject | keyvalue">
+      {{ item.value.message }}
+    </p>
+  </div>
+
+<form (submit)="editPet()">
+    <p>
+      <label for="name">Pet name:</label>
+      <input type="text" name="pet.name" [(ngModel)]="pet.name">
+    </p>
+    <p>
+      <label for="type">Pet type:</label>
+      <input type="text" name="pet.type" [(ngModel)]="pet.type">
+    </p>
+    <p>
+      <label for="type">Description:</label>
+      <input type="text" name="pet.description" [(ngModel)]="pet.description">
+    </p>
+    <ul>
+      <label for="type">Skills (optional):</label>
+      <li>
+        <label for="type">Skill 1:</label>
+        <input type="text" name="pet.skill1" [(ngModel)]="pet.skill1">
+      </li>
+      <li>
+        <label for="type">Skill 2:</label>
+        <input type="text" name="pet.skill2" [(ngModel)]="pet.skill2">
+      </li>
+      <li>
+        <label for="type">Skill 3:</label>
+        <input type="text" name="pet.skill3" [(ngModel)]="pet.skill3">
+      </li>
+    </ul>
+    <input type="submit" value="Edit pet">
+    <button [routerLink]="['/pets', pet._id]">Cancel</button>
+  </form>

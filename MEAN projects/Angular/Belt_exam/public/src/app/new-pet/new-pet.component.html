@@ -1,0 +1,41 @@
+<a [routerLink]="['/pets']">Home</a>
+
+<h2>Know of a pet needing a home?</h2>
+
+<div *ngIf="errorsObject">
+  <p class="errorMessage" *ngFor="let item of errorsObject | keyvalue">
+    {{ item.value.message }}
+  </p>
+</div>
+
+<form (submit)="createNewPet()">
+  <p>
+    <label for="name">Pet name:</label>
+    <input type="text" name="newPet.name" [(ngModel)]="newPet.name">
+  </p>
+  <p>
+    <label for="type">Pet type:</label>
+    <input type="text" name="newPet.type" [(ngModel)]="newPet.type">
+  </p>
+  <p>
+    <label for="type">Description:</label>
+    <input type="text" name="newPet.description" [(ngModel)]="newPet.description">
+  </p>
+  <ul>
+    <label for="type">Skills:</label>
+    <li>
+      <label for="type">Skill 1:</label>
+      <input type="text" name="newPet.skill1" [(ngModel)]="newPet.skill1">
+    </li>
+    <li>
+      <label for="type">Skill 2:</label>
+      <input type="text" name="newPet.skill2" [(ngModel)]="newPet.skill2">
+    </li>
+    <li>
+      <label for="type">Skill 3:</label>
+      <input type="text" name="newPet.skill3" [(ngModel)]="newPet.skill3">
+    </li>
+  </ul>
+  <input type="submit" value="Add pet">
+  <button [routerLink]="['/pets']">Cancel</button>
+</form>

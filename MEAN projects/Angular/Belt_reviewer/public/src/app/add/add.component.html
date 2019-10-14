@@ -1,0 +1,8 @@
+<h3>Add Ride</h3>
+<p *ngFor="let e of errors">{{e}}</p>
+<form (submit)="addRide()">
+  <p>Driver <input type="text" name="newRide.driver" [(ngModel)="newRide.driver"></p>
+  <p>Destination <input type="text" name="newRide.destination" [(ngModel)="newRide.destination"></p>
+  <p>Seats <input type="number" name="newRide.capacity" [(ngModel)="newRide.capacity"></p>
+  <input type="submit" value="Let's Go">
+</form>

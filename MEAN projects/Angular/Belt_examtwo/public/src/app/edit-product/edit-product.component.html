@@ -1,0 +1,24 @@
+<h2>Edit this Product</h2>
+
+<div *ngIf="errorsObject">
+    <p class="errorMessage" *ngFor="let item of errorsObject | keyvalue">
+      {{ item.value.message }}
+    </p>
+  </div>
+
+<form #productForm (submit)="editProduct()">
+    <p>
+      <label for="name">Name:</label>
+      <input type="text" name="product.name" [(ngModel)]="product.name">
+    </p>
+    <p>
+      <label for="type">Qty:</label>
+      <input type="number" name="product.qty" [(ngModel)]="product.qty">
+    </p>
+    <p>
+      <label for="type">Price:</label>
+      <input type="number" name="product.price" [(ngModel)]="product.price">
+    </p>
+    <input class="update" type="submit" value="Update">
+</form>
+<button class="reset" (click)="reset()">Reset</button>

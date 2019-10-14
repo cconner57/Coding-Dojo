@@ -1,0 +1,13 @@
+.errorMessage {
+  color: purple;
+}
+
+.reset {
+  color: gray;
+  background-color: plum;
+}
+
+.create {
+  color: gray;
+  background-color: lightblue;
+}

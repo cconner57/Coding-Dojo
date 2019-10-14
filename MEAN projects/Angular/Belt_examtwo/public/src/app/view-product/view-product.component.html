@@ -1,0 +1,17 @@
+<h2>Product Details</h2>
+<table>
+  <tr>
+    <td>Name </td>
+    <td>{{ product.name }}</td>
+  </tr>
+  <tr>
+    <td>Qty </td>
+    <td>{{ product.qty }}</td>
+  </tr>
+  <tr>
+    <td>Price </td>
+    <td>${{ product.price }}</td>
+  </tr>
+  <button class="back" [routerLink]="['/products']">Back</button>
+  <button class="delete" (click)="deleteProduct(product._id)">Delete</button>
+</table>
